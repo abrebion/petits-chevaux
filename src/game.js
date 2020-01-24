@@ -66,6 +66,31 @@ class Game {
     }
     this.renderUserFeedback();
     const tokens = this.getSelectableTokens(this.players[this.currentPlayer]);
+
+    if (!this.players[this.currentPlayer].activeTokens && this.diceValue !== 6) {
+      console.log("You should get a 6 to start");
+      this.rotatePlayer();
+      return;
+    }
+    // if (!token.canMove) {
+    //   if (this.diceValue !== 6 && token.startAttempt > 0) {
+    //     token.startAttempt -= 1;
+    //     this.rollDice();
+    //   }
+    //   if (this.diceValue === 6) {
+    //     token.canMove = true;
+    //     token.isPlaying = true;
+    //     token.initialPosition = true;
+    //     this.getParentPlayer(token).activeTokens += 1;
+    //     this.rotatePlayer();
+    //     // this.renderMove(token, this.diceValue);
+    //   }
+    // }
+
+    // if (!token.canMove) {
+    //   token.startAttempt = 1;
+    //   return;
+    // }
     this.makeSelectable(tokens);
     return this.diceValue;
   }
@@ -107,6 +132,7 @@ class Game {
       const newTokenEl = tokenEl.cloneNode(true);
       tokenEl.parentElement.replaceChild(newTokenEl, tokenEl);
     });
+
     const newPosition = this.calculateNextPosition(token, this.diceValue);
     if (token.isSaved) {
       this.incrementScore(this.getParentPlayer(token));
@@ -115,7 +141,7 @@ class Game {
       this.renderMove(token, newPosition);
     }
     token.position = newPosition;
-    // this.players[this.currentPlayer].activeTokens += 1;
+
     this.hitCompetitor(newPosition, this.tokenFeedback);
     if (token.canPlayAgain) {
       token.canPlayAgain = false;
@@ -123,6 +149,7 @@ class Game {
     } else {
       this.rotatePlayer();
     }
+
     const userFeedbackEl = document.getElementById("user-feedback");
     const newUserFeedbackEl = userFeedbackEl.cloneNode(true);
     userFeedbackEl.parentElement.replaceChild(newUserFeedbackEl, userFeedbackEl);
@@ -130,7 +157,6 @@ class Game {
 
   // Calculate next position
   calculateNextPosition(token, increment) {
-
     let nextPosition = 0;
 
     if (increment === 6) token.canPlayAgain = true;
@@ -298,7 +324,6 @@ class Game {
     nextPlayer.textContent = `${this.getPlayerName(this.players[this.currentPlayer])}, you rolled the dice and got a...`;
     const newnextPlayer = nextPlayer.cloneNode(true);
     nextPlayer.parentElement.replaceChild(newnextPlayer, nextPlayer);
-
     this.rollDice();
   }
 }
