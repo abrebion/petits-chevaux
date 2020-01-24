@@ -143,6 +143,6 @@ function startGame() {
   startBtn.addEventListener("click", resetPlayerSettings);
   startBtn.removeEventListener("click", startGame);
   document.getElementById("dice").classList.toggle("animated");
-  nextPlayer.textContent = `${game.players[0].name}, you rolled the dice and got a...`;
+  //nextPlayer.textContent = `${game.players[0].name}, you rolled the dice and got a...`;
   game.rollDice();
 }

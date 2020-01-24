@@ -56,6 +56,14 @@ class Game {
 
   rollDice() {
     this.diceValue = Math.floor(Math.random() * 6 + 1);
+    if (!this.players[this.currentPlayer].activeTokens && this.diceValue !== 6) {
+      console.log("You should get a 6 to enter the board");
+      this.renderUserFeedback("red");
+      window.setTimeout(() => {
+        this.rotatePlayer();
+      }, 5000);
+      return;
+    }
     this.renderUserFeedback();
     const tokens = this.getSelectableTokens(this.players[this.currentPlayer]);
     this.makeSelectable(tokens);
@@ -92,6 +100,7 @@ class Game {
   // Select the token to move
   selectToken(token) {
     this.currentToken = token;
+
     this.getSelectableTokens(this.players[this.currentPlayer]).forEach(token => {
       const tokenEl = this.getTokenElement(token);
       tokenEl.classList.remove("selectable", "highlight");
@@ -121,28 +130,7 @@ class Game {
 
   // Calculate next position
   calculateNextPosition(token, increment) {
-    // if (!this.canMove) {
-    //   if (increment !== 6 && this.startAttempt > 0) {
-    //     this.startAttempt -= 1;
-    //     this.moveToken();
-    //     return;
-    //   }
-    //   if (increment === 6) {
-    //     this.canMove = true;
-    //     this.isPlaying = true;
-    //     this.initialPosition = true;
-    //     // this.getCellCoordinates = 3;
-    //     this.getPlayer().activeTokens += 1;
-    //   }
-    // }
 
-    // if (!this.canMove) {
-    //   this.renderUserFeedback(increment);
-    //   this.startAttempt = 3;
-    //   return;
-    // }
-
-    // Set the next position to reach
     let nextPosition = 0;
 
     if (increment === 6) token.canPlayAgain = true;
@@ -225,7 +213,6 @@ class Game {
     token.isSaved = false;
     token.position = token.start;
     token.canMove = false;
-    token.startAttempt = 3;
     token.initialPosition = false;
     token.canPlayAgain = false;
     this.replaceTokenInYard(token);
@@ -250,27 +237,17 @@ class Game {
     return activeTokens;
   }
 
-  renderUserFeedback() {
+  renderUserFeedback(color = "black") {
     const diceValueEl = document.getElementById("dice-value");
     diceValueEl.textContent = this.diceValue;
     const userTipEl = document.getElementById("user-tip");
     let userTip = "";
     if (this.diceValue === 6 && !this.players[this.currentPlayer].activeTokens) userTip = `Great! You can enter the game<br>and play one more time.`;
-    // else if (!this.canMove) userMessage = `Ouch! You should get a 6 to enter the game.<br>Try the next round.`;
+    else if (this.diceValue !== 6 && !this.players[this.currentPlayer].activeTokens) userTip = `Ouch! You should get a 6 to enter the game.<br>Next player will automatically play in 5s.`;
     else if (this.diceValue === 6) userTip = `You can play again<br>or enroll a new token on the board.`;
     else userTip = `Select the token you want to move.`;
     userTipEl.innerHTML = userTip;
-
-    // const userMessageEl = document.getElementById("dice-value");
-    // const newUserMessageEl = userMessageEl.cloneNode(true);
-    // userMessageEl.parentElement.replaceChild(newUserMessageEl, userMessageEl);
-    // let userMessage;
-    // if (this.diceValue === 6 && this.initialPosition) userMessage = `Great! You got a ${this.diceValue} to enter the game.<br>You can play again.`;
-    // else if (!this.canMove) userMessage = `Ouch! You should get a 6 to enter the game.<br>Try the next round.`;
-    // else if (this.diceValue === 6) userMessage = `Lucky you! You got a ${this.diceValue}.<br>Select the token to move or choose to enroll a new one.`;
-    // else userMessage = `You got a ${this.diceValue}.`;
-    // newUserMessageEl.innerHTML = userMessage;
-    // newUserMessageEl.classList.toggle("user-feedback");
+    userTipEl.style.color = color;
   }
 
   tokenFeedback(action) {
@@ -337,7 +314,6 @@ class Token {
     this.safePosition = 0;
     this.isSaved = false;
     this.canMove = false;
-    this.startAttempt = 3;
     this.initialPosition = false;
     this.canPlayAgain = false;
   }
