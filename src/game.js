@@ -105,11 +105,13 @@ class Game {
   getSelectableTokens(player) {
     if (player.activeTokens === 0) {
       return [player.tokens.filter(element => !element.isPlaying)[0]];
-    } else {
+    } else if (player.activeTokens < 4) {
       const eligibleToken = this.diceValue === 6 ? player.tokens.filter(element => !element.isPlaying)[0] : [];
       const activeTokens = this.getActiveTokens(player);
       const selectableTokens = activeTokens.concat(eligibleToken);
       return selectableTokens;
+    } else {
+      return this.getActiveTokens(player);
     }
   }
 
@@ -184,6 +186,7 @@ class Game {
 
       // Token is already in the safe zone but has not reach the end yet
       else if (token.safePosition) {
+        token.position = null;
         nextPosition = token.safePosition + increment;
         token.safePosition = token.safePosition + increment;
         if (nextPosition > 4) {
