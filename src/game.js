@@ -56,12 +56,13 @@ class Game {
 
   rollDice() {
     this.diceValue = Math.floor(Math.random() * 6 + 1);
+    this.animateDice(this.diceValue);
     if (!this.players[this.currentPlayer].activeTokens && this.diceValue !== 6) {
       console.log("You should get a 6 to enter the board");
       this.renderUserFeedback("red");
       window.setTimeout(() => {
         this.rotatePlayer();
-      }, 3000);
+      }, 6000);
       return;
     }
     this.renderUserFeedback();
@@ -72,27 +73,23 @@ class Game {
       this.rotatePlayer();
       return;
     }
-    // if (!token.canMove) {
-    //   if (this.diceValue !== 6 && token.startAttempt > 0) {
-    //     token.startAttempt -= 1;
-    //     this.rollDice();
-    //   }
-    //   if (this.diceValue === 6) {
-    //     token.canMove = true;
-    //     token.isPlaying = true;
-    //     token.initialPosition = true;
-    //     this.getParentPlayer(token).activeTokens += 1;
-    //     this.rotatePlayer();
-    //     // this.renderMove(token, this.diceValue);
-    //   }
-    // }
-
-    // if (!token.canMove) {
-    //   token.startAttempt = 1;
-    //   return;
-    // }
     this.makeSelectable(tokens);
     return this.diceValue;
+  }
+
+  animateDice(value) {   
+    const dice3D = document.getElementById('dice-3d');
+    const rotation = 360 * value;
+    if (value === 1) dice3D.style.transform = 'rotateX(' + (rotation) + 'deg) rotateY(' + (rotation) + 'deg)';
+    if (value === 2) dice3D.style.transform = 'rotateX(' + (rotation + 180) + 'deg) rotateY(' + (rotation)  + 'deg)';
+    if (value === 3) dice3D.style.transform = 'rotateX(' + (rotation) + 'deg) rotateY(' + (rotation + 270)  + 'deg)';
+    if (value === 4) dice3D.style.transform = 'rotateX(' + (rotation + 180) + 'deg) rotateY(' + (rotation + 270)  + 'deg)';
+    if (value === 5) dice3D.style.transform = 'rotateX(' + (rotation + 270) + 'deg) rotateY(' + (rotation)  + 'deg)';
+    if (value === 6) dice3D.style.transform = 'rotateX(' +(rotation + 90) + 'deg) rotateY(' + (rotation + 90) + 'deg)';
+
+    function getRandom(max, min) {
+      return (Math.floor(Math.random() * (max-min)) + min) * 90;
+    }
   }
 
   // Get all active tokens for a player

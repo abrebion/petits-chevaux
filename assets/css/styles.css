@@ -152,10 +152,11 @@ h2.sub-title {
 #user-feedback {
     text-align: center;
     font-size: .8rem;
+    margin: 20px 0;
 }
 
 #user-feedback {
-    animation: reveal-user-feedback 1s forwards ease-in;
+    animation: reveal-user-feedback 0.5s 3s backwards ease-in;
 }
 
 @keyframes reveal-user-feedback {
@@ -706,7 +707,7 @@ h2.sub-title {
     height: 45px;
     border-radius: 50%;
     background-color: white;
-    animation: highlight-token 1.25s 1s backwards cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    animation: highlight-token 1.25s 3s backwards cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
 @keyframes highlight-token {
@@ -800,3 +801,108 @@ h2.sub-title {
         scale: 0;
     }
 }
+
+#dice-container {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin: 0 auto;
+    perspective: 1000px;
+    perspective-origin: 50% 100%;
+    box-sizing: content-box;
+    transform: scale(0.65);
+  }
+
+  #dice-container * {
+    box-sizing: content-box;
+  }
+
+#dice-3d .front {
+    transform: 
+      translateZ(50px);
+  }
+  
+  #dice-3d .back {
+    transform: 
+      rotateX(-180deg)
+      translateZ(50px);
+  }
+  
+  #dice-3d .right {
+    transform:
+      rotateY(90deg)
+      translateZ(50px);
+  }
+  
+  #dice-3d .left {
+    transform:
+      rotateY(-90deg)
+      translateZ(50px);
+  }
+  
+  #dice-3d .top {
+    transform:
+      rotateX(90deg)
+      translateZ(50px);
+  }
+  
+  #dice-3d .bottom {
+    transform:
+      rotateX(-90deg)
+      translateZ(50px);
+  }
+  
+
+  #dice-3d {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 3s;
+  }
+
+  
+  #dice-3d div {
+    background: hsla(0, 0%, 100%, 0.9);
+    display: block;
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    border: 2px solid black;
+    margin: 0 auto;  
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    padding: 25px 0;
+  }
+  
+  .dot {
+    display: block;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: black;
+    border-radius: 50%;  
+  }
+  
+  .front .dot1 { top: 42.5px; left: 42.5px; }
+  .back .dot1 { top: 25px; left: 25px; }
+  .back .dot2 { top: 60px; left: 60px; }
+  .right .dot1 { top: 25px; left: 25px; }
+  .right .dot2 { top: 42.5px; left: 42.5px; }
+  .right .dot3 { top: 60px; left: 60px; }
+  .left .dot1 { top: 25px; left: 25px; }
+  .left .dot2 { top: 25px; left: 60px; }
+  .left .dot3 { top: 60px; left: 25px; }
+  .left .dot4 { top: 60px; left: 60px; }
+  .top .dot1 { top: 25px; left: 25px; }
+  .top .dot2 { top: 25px; left: 60px; }
+  .top .dot3 { top: 60px; left: 25px; }
+  .top .dot4 { top: 60px; left: 60px; }
+  .top .dot5 { top: 42.5px; left: 42.5px; }
+  .bottom .dot1 { top: 25px; left: 25px; }
+  .bottom .dot2 { top: 25px; left: 42.5px; }
+  .bottom .dot3 { top: 25px; left: 60px; }
+  .bottom .dot4 { top: 60px; left: 25px; }
+  .bottom .dot5 { top: 60px; left: 42.5px; }
+  .bottom .dot6 { top: 60px; left: 60px; }

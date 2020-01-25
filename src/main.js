@@ -97,7 +97,6 @@ function resetPlayerSettings() {
   startBtn.textContent = "Start";
   startBtn.removeEventListener("click", resetPlayerSettings);
   startBtn.addEventListener("click", startGame);
-  dice.classList.toggle("animated");
   nextPlayer.textContent = "";
   diceValue.textContent = "";
   userTip.textContent = "";
@@ -142,7 +141,5 @@ function startGame() {
   startBtn.textContent = "Reset";
   startBtn.addEventListener("click", resetPlayerSettings);
   startBtn.removeEventListener("click", startGame);
-  document.getElementById("dice").classList.toggle("animated");
-  //nextPlayer.textContent = `${game.players[0].name}, you rolled the dice and got a...`;
   game.rollDice();
 }
