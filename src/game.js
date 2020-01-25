@@ -137,7 +137,10 @@ class Game {
     } else {
       this.renderMove(token, newPosition);
     }
-    token.position = newPosition;
+
+    // Fix bug that uncorrectly set the position property to the safePosition property
+    if (token.isSafe) token.position = null;
+    else token.position = newPosition;
 
     this.hitCompetitor(newPosition, this.tokenFeedback);
     if (token.canPlayAgain) {
@@ -172,7 +175,6 @@ class Game {
       if (token.position < translatedStart && token.position + increment >= translatedStart) {
         token.isSafe = true;
         token.safePosition = token.position + increment - (translatedStart - 1);
-        token.position = null;
         if (token.safePosition > 4) {
           token.isSaved = true;
         }
