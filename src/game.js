@@ -61,7 +61,7 @@ class Game {
       this.renderUserFeedback("red");
       window.setTimeout(() => {
         this.rotatePlayer();
-      }, 5000);
+      }, 3000);
       return;
     }
     this.renderUserFeedback();
@@ -269,7 +269,7 @@ class Game {
     const userTipEl = document.getElementById("user-tip");
     let userTip = "";
     if (this.diceValue === 6 && !this.players[this.currentPlayer].activeTokens) userTip = `Great! You can enter the game<br>and play one more time.`;
-    else if (this.diceValue !== 6 && !this.players[this.currentPlayer].activeTokens) userTip = `Ouch! You should get a 6 to enter the game.<br>Next player will automatically play in 5s.`;
+    else if (this.diceValue !== 6 && !this.players[this.currentPlayer].activeTokens) userTip = `Ouch! You should get a 6 to enter the game.<br>Next player will automatically play in 3s.`;
     else if (this.diceValue === 6) userTip = `You can play again<br>or enroll a new token on the board.`;
     else userTip = `Select the token you want to move.`;
     userTipEl.innerHTML = userTip;
