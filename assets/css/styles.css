@@ -26,7 +26,10 @@ body {
 }
 
 h1,
-h2,
+h2 {
+    margin-bottom: 3rem;
+}
+
 p {
     margin-bottom: 1rem;
 }
@@ -40,10 +43,11 @@ p {
 
 #control-panel {
     width: 400px;
+    height: 600px;
     margin-left: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -124,27 +128,13 @@ h2.sub-title {
     background-size: 60px;
 }
 
-#dice.animated {
-    animation: .2s steps(5) infinite alternate animated-dice;
-}
-
-@keyframes animated-dice {
-    from {
-        background-position: top;
-    }
-
-    to {
-        background-position: bottom;
-    }
-}
-
 #next-player {
     font-style: italic;
 }
 
 #dice-value {
     font-family: "Pacifico";
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: bold;
     line-height: 1;
 }
@@ -152,21 +142,25 @@ h2.sub-title {
 #user-feedback {
     text-align: center;
     font-size: .8rem;
-    margin: 20px 0;
 }
 
 #user-feedback {
-    animation: reveal-user-feedback 0.5s 3s backwards ease-in;
+    animation: reveal-user-feedback 0.5s 3s ease-in step-end;
 }
 
 @keyframes reveal-user-feedback {
-    from {
+    0% {
         opacity: 0;
     }
 
-    to {
+    50% {
         opacity: 1;
     }
+
+    100% {
+        opacity: 0;
+    }
+
 }
 
 #roll-dice-btn {
@@ -634,40 +628,6 @@ h2.sub-title {
     transition-duration: .5s;
     transition-delay: .25s;
     transition-timing-function: ease-in-out;
-    /* animation: .5s ease-in-out move-token; */
-}
-
-@keyframes move-token {
-    0% {
-        top: 0;
-        left: 0;
-        scale: 1;
-    }
-
-    25% {
-        top: 50px;
-        left: 50px;
-        scale: 1.25;
-    }
-
-    50% {
-        top: 50px;
-        left: 50px;
-        scale: 1.5;
-    }
-
-    75% {
-        top: 100px;
-        left: 100px;
-        scale: 1.25;
-    }
-
-    100% {
-        top: 200px;
-        left: 200px;
-        scale: 1;
-    }
-
 }
 
 .token.green {
@@ -707,7 +667,7 @@ h2.sub-title {
     height: 45px;
     border-radius: 50%;
     background-color: white;
-    animation: highlight-token 1.25s 3s backwards cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    animation: highlight-token 1.25s 1.5s backwards cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
 @keyframes highlight-token {
@@ -813,7 +773,7 @@ h2.sub-title {
     align-items: center;
     padding: 2rem;
     perspective: 600px;
-    transform: scale(0.65);
+    transform: scale(0.5);
   }
   .dice {
     width: 6rem;
@@ -821,11 +781,11 @@ h2.sub-title {
     position: relative;
     transform-style: preserve-3d;
   }
+  .dice:hover {
+    cursor: pointer;
+  }
   .dice-animated {
     transition: transform 1.5s ease-out;
-  }
-  .dice-not-animated {
-    transition: none;
   }
   .dice-face {
     background-color: rgba(255,255,255, 1);
@@ -950,20 +910,6 @@ h2.sub-title {
   }
   [data-side="6"] .dot:nth-of-type(6) {
     grid-area: nine;
-  }
-  
-  button {
-    align-self: center;
-    background-color: #efefef;
-    border: none;
-    color: #333;
-    font-size: 1.25rem;
-    font-weight: 700;
-    justify-self: center;
-    padding: 0.5rem 1rem;
-  }
-  button:hover {
-    cursor: pointer;
   }
   
   @media (min-width: 900px) {
