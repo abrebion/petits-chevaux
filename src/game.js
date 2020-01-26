@@ -56,40 +56,40 @@ class Game {
 
   rollDice() {
     this.diceValue = Math.floor(Math.random() * 6 + 1);
-    this.animateDice(this.diceValue);
+    this.animateDice();
     if (!this.players[this.currentPlayer].activeTokens && this.diceValue !== 6) {
       console.log("You should get a 6 to enter the board");
       this.renderUserFeedback("red");
       window.setTimeout(() => {
+        this.stopDice();
         this.rotatePlayer();
-      }, 6000);
+      }, 5000);
       return;
     }
+   
     this.renderUserFeedback();
     const tokens = this.getSelectableTokens(this.players[this.currentPlayer]);
 
-    if (!this.players[this.currentPlayer].activeTokens && this.diceValue !== 6) {
-      console.log("You should get a 6 to start");
-      this.rotatePlayer();
-      return;
-    }
+    // if (!this.players[this.currentPlayer].activeTokens && this.diceValue !== 6) {
+    //   console.log("You should get a 6 to start");
+    //   this.rotatePlayer();
+    //   return;
+    // }
     this.makeSelectable(tokens);
     return this.diceValue;
   }
 
-  animateDice(value) {   
-    const dice3D = document.getElementById('dice-3d');
-    const rotation = 360 * value;
-    if (value === 1) dice3D.style.transform = 'rotateX(' + (rotation) + 'deg) rotateY(' + (rotation) + 'deg)';
-    if (value === 2) dice3D.style.transform = 'rotateX(' + (rotation + 180) + 'deg) rotateY(' + (rotation)  + 'deg)';
-    if (value === 3) dice3D.style.transform = 'rotateX(' + (rotation) + 'deg) rotateY(' + (rotation + 270)  + 'deg)';
-    if (value === 4) dice3D.style.transform = 'rotateX(' + (rotation + 180) + 'deg) rotateY(' + (rotation + 270)  + 'deg)';
-    if (value === 5) dice3D.style.transform = 'rotateX(' + (rotation + 270) + 'deg) rotateY(' + (rotation)  + 'deg)';
-    if (value === 6) dice3D.style.transform = 'rotateX(' +(rotation + 90) + 'deg) rotateY(' + (rotation + 90) + 'deg)';
+  animateDice() {
+    const dice = document.getElementById('dice-3d');
+    dice.classList.add("dice-animated");
+    dice.dataset.roll = this.diceValue;
+    return dice;
+  }
 
-    function getRandom(max, min) {
-      return (Math.floor(Math.random() * (max-min)) + min) * 90;
-    }
+  stopDice() {
+    const dice = document.getElementById('dice-3d');
+    dice.classList.remove("dice-animated");
+    return dice;
   }
 
   // Get all active tokens for a player
