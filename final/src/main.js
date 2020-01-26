@@ -18,6 +18,7 @@ const userFeedback = document.getElementById("user-feedback");
 const nextPlayer = document.getElementById("next-player");
 const diceValue = document.getElementById("dice-value");
 const userTip = document.getElementById("user-tip");
+const dice3DBtn = document.getElementById('dice-3d');
 
 // Show/hide rules modal
 function showRules(evt) {
@@ -97,7 +98,6 @@ function resetPlayerSettings() {
   startBtn.textContent = "Start";
   startBtn.removeEventListener("click", resetPlayerSettings);
   startBtn.addEventListener("click", startGame);
-  dice.classList.toggle("animated");
   nextPlayer.textContent = "";
   diceValue.textContent = "";
   userTip.textContent = "";
@@ -142,7 +142,7 @@ function startGame() {
   startBtn.textContent = "Reset";
   startBtn.addEventListener("click", resetPlayerSettings);
   startBtn.removeEventListener("click", startGame);
-  document.getElementById("dice").classList.toggle("animated");
-  //nextPlayer.textContent = `${game.players[0].name}, you rolled the dice and got a...`;
-  game.rollDice();
+  nextPlayer.textContent = `${game.getPlayerName(game.players[game.currentPlayer])}, click to roll the dice...`;
+  dice3DBtn.addEventListener("click", () => game.rollDice());
+  console.log(game);
 }

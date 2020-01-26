@@ -55,44 +55,24 @@ class Game {
   }
 
   rollDice() {
-    this.diceValue = Math.floor(Math.random() * 6 + 1);
-    if (!this.players[this.currentPlayer].activeTokens && this.diceValue !== 6) {
-      console.log("You should get a 6 to enter the board");
-      this.renderUserFeedback("red");
+    dice3DBtn.classList.remove("dice-animated");
+    window.setTimeout(() => {
+      this.diceValue = Math.floor(Math.random() * 6 + 1);
+      dice3DBtn.classList.add("dice-animated");
+      dice3DBtn.dataset.roll = this.diceValue;
+
       window.setTimeout(() => {
-        this.rotatePlayer();
-      }, 3000);
-      return;
-    }
-    this.renderUserFeedback();
-    const tokens = this.getSelectableTokens(this.players[this.currentPlayer]);
-
-    if (!this.players[this.currentPlayer].activeTokens && this.diceValue !== 6) {
-      console.log("You should get a 6 to start");
-      this.rotatePlayer();
-      return;
-    }
-    // if (!token.canMove) {
-    //   if (this.diceValue !== 6 && token.startAttempt > 0) {
-    //     token.startAttempt -= 1;
-    //     this.rollDice();
-    //   }
-    //   if (this.diceValue === 6) {
-    //     token.canMove = true;
-    //     token.isPlaying = true;
-    //     token.initialPosition = true;
-    //     this.getParentPlayer(token).activeTokens += 1;
-    //     this.rotatePlayer();
-    //     // this.renderMove(token, this.diceValue);
-    //   }
-    // }
-
-    // if (!token.canMove) {
-    //   token.startAttempt = 1;
-    //   return;
-    // }
-    this.makeSelectable(tokens);
-    return this.diceValue;
+        if (!this.players[this.currentPlayer].activeTokens && this.diceValue !== 6) {
+          console.log("You should get a 6 to enter the board");
+          this.renderUserFeedback("red");
+          this.rotatePlayer();
+        } else {
+          this.renderUserFeedback();
+          const tokens = this.getSelectableTokens(this.players[this.currentPlayer]);
+          this.makeSelectable(tokens);
+        }
+      }, 1500);
+    }, 500);
   }
 
   // Get all active tokens for a player
@@ -105,13 +85,11 @@ class Game {
   getSelectableTokens(player) {
     if (player.activeTokens === 0) {
       return [player.tokens.filter(element => !element.isPlaying)[0]];
-    } else if (player.activeTokens < 4) {
+    } else {
       const eligibleToken = this.diceValue === 6 ? player.tokens.filter(element => !element.isPlaying)[0] : [];
       const activeTokens = this.getActiveTokens(player);
       const selectableTokens = activeTokens.concat(eligibleToken);
       return selectableTokens;
-    } else {
-      return this.getActiveTokens(player);
     }
   }
 
@@ -149,14 +127,12 @@ class Game {
     this.hitCompetitor(newPosition, this.tokenFeedback);
     if (token.canPlayAgain) {
       token.canPlayAgain = false;
-      this.rollDice();
     } else {
       this.rotatePlayer();
     }
 
-    const userFeedbackEl = document.getElementById("user-feedback");
-    const newUserFeedbackEl = userFeedbackEl.cloneNode(true);
-    userFeedbackEl.parentElement.replaceChild(newUserFeedbackEl, userFeedbackEl);
+    diceValue.textContent = "";
+    userTip.textContent = "";
   }
 
   // Calculate next position
@@ -272,7 +248,7 @@ class Game {
     const userTipEl = document.getElementById("user-tip");
     let userTip = "";
     if (this.diceValue === 6 && !this.players[this.currentPlayer].activeTokens) userTip = `Great! You can enter the game<br>and play one more time.`;
-    else if (this.diceValue !== 6 && !this.players[this.currentPlayer].activeTokens) userTip = `Ouch! You should get a 6 to enter the game.<br>Next player will automatically play in 3s.`;
+    else if (this.diceValue !== 6 && !this.players[this.currentPlayer].activeTokens) userTip = `Ouch! You should get a 6 to enter the game.`;
     else if (this.diceValue === 6) userTip = `You can play again<br>or enroll a new token on the board.`;
     else userTip = `Select the token you want to move.`;
     userTipEl.innerHTML = userTip;
@@ -323,11 +299,17 @@ class Game {
   rotatePlayer() {
     if (this.currentPlayer < this.players.length - 1) this.currentPlayer += 1;
     else this.currentPlayer = 0;
-    const nextPlayer = document.getElementById("next-player");
-    nextPlayer.textContent = `${this.getPlayerName(this.players[this.currentPlayer])}, you rolled the dice and got a...`;
-    const newnextPlayer = nextPlayer.cloneNode(true);
-    nextPlayer.parentElement.replaceChild(newnextPlayer, nextPlayer);
-    this.rollDice();
+    window.setTimeout(() => {
+      nextPlayer.textContent = `${this.getPlayerName(this.players[this.currentPlayer])}, click to roll the dice...`;
+      diceValue.textContent = "";
+      userTip.textContent = "";
+    }, 1500);
+
+    // const nextPlayer = document.getElementById("next-player");
+    // nextPlayer.textContent = `${this.getPlayerName(this.players[this.currentPlayer])}, you rolled the dice and got a...`;
+    // const newnextPlayer = nextPlayer.cloneNode(true);
+    // nextPlayer.parentElement.replaceChild(newnextPlayer, nextPlayer);
+    // this.rollDice();
   }
 }
 

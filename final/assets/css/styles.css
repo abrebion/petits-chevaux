@@ -26,7 +26,10 @@ body {
 }
 
 h1,
-h2,
+h2 {
+    margin-bottom: 3rem;
+}
+
 p {
     margin-bottom: 1rem;
 }
@@ -40,10 +43,11 @@ p {
 
 #control-panel {
     width: 400px;
+    height: 600px;
     margin-left: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -124,27 +128,13 @@ h2.sub-title {
     background-size: 60px;
 }
 
-#dice.animated {
-    animation: .2s steps(5) infinite alternate animated-dice;
-}
-
-@keyframes animated-dice {
-    from {
-        background-position: top;
-    }
-
-    to {
-        background-position: bottom;
-    }
-}
-
 #next-player {
     font-style: italic;
 }
 
 #dice-value {
     font-family: "Pacifico";
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: bold;
     line-height: 1;
 }
@@ -155,17 +145,22 @@ h2.sub-title {
 }
 
 #user-feedback {
-    animation: reveal-user-feedback 1s forwards ease-in;
+    animation: reveal-user-feedback 0.5s 3s ease-in step-end;
 }
 
 @keyframes reveal-user-feedback {
-    from {
+    0% {
         opacity: 0;
     }
 
-    to {
+    50% {
         opacity: 1;
     }
+
+    100% {
+        opacity: 0;
+    }
+
 }
 
 #roll-dice-btn {
@@ -633,40 +628,6 @@ h2.sub-title {
     transition-duration: .5s;
     transition-delay: .25s;
     transition-timing-function: ease-in-out;
-    /* animation: .5s ease-in-out move-token; */
-}
-
-@keyframes move-token {
-    0% {
-        top: 0;
-        left: 0;
-        scale: 1;
-    }
-
-    25% {
-        top: 50px;
-        left: 50px;
-        scale: 1.25;
-    }
-
-    50% {
-        top: 50px;
-        left: 50px;
-        scale: 1.5;
-    }
-
-    75% {
-        top: 100px;
-        left: 100px;
-        scale: 1.25;
-    }
-
-    100% {
-        top: 200px;
-        left: 200px;
-        scale: 1;
-    }
-
 }
 
 .token.green {
@@ -706,7 +667,7 @@ h2.sub-title {
     height: 45px;
     border-radius: 50%;
     background-color: white;
-    animation: highlight-token 1.25s 1s backwards cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    animation: highlight-token 1.25s 1.5s backwards cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
 @keyframes highlight-token {
@@ -800,3 +761,160 @@ h2.sub-title {
         scale: 0;
     }
 }
+
+/*************************************3D dice *************************************/
+
+.dice-container * {
+    box-sizing: content-box;
+  }
+  .dice-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    perspective: 600px;
+    transform: scale(0.5);
+  }
+  .dice {
+    width: 6rem;
+    height: 6rem;
+    position: relative;
+    transform-style: preserve-3d;
+  }
+  .dice:hover {
+    cursor: pointer;
+  }
+  .dice-animated {
+    transition: transform 1.5s ease-out;
+  }
+  .dice-face {
+    background-color: rgba(255,255,255, 1);
+    box-shadow: inset -0.35rem 0.35rem 0.75rem rgba(0, 0, 0, 0.2),
+      inset 0.5rem -0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-areas: "one two three" "four five six" "seven eight nine";
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    position: absolute;
+  }
+  .dot {
+    justify-self: center;
+    align-self: center;
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background-color: #676767;
+    box-shadow: inset -0.15rem 0.15rem 0.25rem rgba(0, 0, 0, 0.5);  
+  }
+  .dice-animated[data-roll="1"] {
+    transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
+  }
+  .dice-animated[data-roll="2"] {
+    transform: rotateX(450deg) rotateY(720deg) rotateZ(360deg);
+  }
+  .dice-animated[data-roll="3"] {
+    transform: rotateX(360deg) rotateY(630deg) rotateZ(360deg);
+  }
+  .dice-animated[data-roll="4"] {
+    transform: rotateX(360deg) rotateY(810deg) rotateZ(360deg);
+  }
+  .dice-animated[data-roll="5"] {
+    transform: rotateX(270deg) rotateY(720deg) rotateZ(360deg);
+  }
+  .dice-animated[data-roll="6"] {
+    transform: rotateX(360deg) rotateY(900deg) rotateZ(360deg);
+  }
+  
+  [data-side="1"] {
+    transform: rotate3d(0, 0, 0, 90deg) translateZ(4rem);
+  }
+  [data-side="2"] {
+    transform: rotate3d(-1, 0, 0, 90deg) translateZ(4rem);
+  }
+  [data-side="3"] {
+    transform: rotate3d(0, 1, 0, 90deg) translateZ(4rem);
+  }
+  [data-side="4"] {
+    transform: rotate3d(0, -1, 0, 90deg) translateZ(4rem);
+  }
+  [data-side="5"] {
+    transform: rotate3d(1, 0, 0, 90deg) translateZ(4rem);
+  }
+  [data-side="6"] {
+    transform: rotate3d(1, 0, 0, 180deg) translateZ(4rem);
+  }
+  [data-side="1"] .dot:nth-of-type(1) {
+    grid-area: five;
+  }
+  [data-side="2"] .dot:nth-of-type(1) {
+    grid-area: one;
+  }
+  [data-side="2"] .dot:nth-of-type(2) {
+    grid-area: nine;
+  }
+  [data-side="3"] .dot:nth-of-type(1) {
+    grid-area: one;
+  }
+  [data-side="3"] .dot:nth-of-type(2) {
+    grid-area: five;
+  }
+  [data-side="3"] .dot:nth-of-type(3) {
+    grid-area: nine;
+  }
+  [data-side="4"] .dot:nth-of-type(1) {
+    grid-area: one;
+  }
+  [data-side="4"] .dot:nth-of-type(2) {
+    grid-area: three;
+  }
+  [data-side="4"] .dot:nth-of-type(3) {
+    grid-area: seven;
+  }
+  [data-side="4"] .dot:nth-of-type(4) {
+    grid-area: nine;
+  }
+  [data-side="5"] .dot:nth-of-type(1) {
+    grid-area: one;
+  }
+  [data-side="5"] .dot:nth-of-type(2) {
+    grid-area: three;
+  }
+  [data-side="5"] .dot:nth-of-type(3) {
+    grid-area: five;
+  }
+  [data-side="5"] .dot:nth-of-type(4) {
+    grid-area: seven;
+  }
+  [data-side="5"] .dot:nth-of-type(5) {
+    grid-area: nine;
+  }
+  [data-side="6"] .dot:nth-of-type(1) {
+    grid-area: one;
+  }
+  [data-side="6"] .dot:nth-of-type(2) {
+    grid-area: three;
+  }
+  [data-side="6"] .dot:nth-of-type(3) {
+    grid-area: four;
+  }
+  [data-side="6"] .dot:nth-of-type(4) {
+    grid-area: six;
+  }
+  [data-side="6"] .dot:nth-of-type(5) {
+    grid-area: seven;
+  }
+  [data-side="6"] .dot:nth-of-type(6) {
+    grid-area: nine;
+  }
+  
+  @media (min-width: 900px) {
+    .dice-container {
+      perspective: 1300px;
+    }
+  }
+  
